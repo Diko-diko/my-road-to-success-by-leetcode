@@ -1,0 +1,27 @@
+题目：
+给你 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。
+在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。
+找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+说明：你不能倾斜容器，且 n 的值至少为 2。
+
+方法一：暴力法
+思路：
+1.使用双重循环，把每两条木板间的面积都算出来
+2.横轴的长为j-i，height以两根木板中最短的那根的作为height，也就是木桶原理
+3.area是一个临时变量，最后的max还要与前一个算出的max做比较。所以area可以是局部变量，max就是全局变量
+class Solution {
+    public int maxArea(int[] height) {
+        int len=height.length;
+        if(len<2) return 0;
+        int max=0;
+        for(int i=0;i<len-1;i++){
+            for(int j=i+1;j<len;j++){
+                int area=(j-i)*Integer.min(height[i],height[j]);
+                max=Integer.max(area,max);
+            }
+        }
+        return max;
+    }
+}
+
+
