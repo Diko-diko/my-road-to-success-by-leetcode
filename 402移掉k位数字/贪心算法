@@ -1,0 +1,49 @@
+2020/3/24
+
+题目：
+给定一个以字符串表示的非负整数 num，移除这个数中的 k 位数字，使得剩下的数字最小。
+
+思路：
+1.设置一个栈，逐个将num加入到栈中，要确保栈中最后一个数字比要加进来的数小，否则把该数字在栈中去掉，去掉k个
+2.考虑特殊情况：
+（1）数组为空时，不是返回null，而是“0”
+（2）首字母是“0”时，去掉首字母
+（3）只有一个数字时，返回的不是该数，而是“0”
+
+注意:
+1.传入的num是字符串而不是数组，要将其转换为字符数组，使用toCharArray()方法
+2.最后将栈中的元素传出时，使用StringBuilder声明一个对象存储其元素
+3.stack.peekLast()是取得栈中最后一个元素的值
+
+class Solution {
+    public String removeKdigits(String num, int k) {
+        LinkedList<Character> stack=new LinkedList<Character>();
+        for(char digit:num.toCharArray()){
+             while(stack.size()>0&&k>0&&stack.peekLast()>digit){
+                 stack.removeLast();
+                 k--;
+                }
+             stack.add(digit);
+        }
+        for(int i=0; i<k; ++i) {
+            stack.removeLast();
+        }
+
+        StringBuilder res=new StringBuilder();
+        boolean leadingZero=true;
+        for(char digit:stack){
+            if(leadingZero&&digit=='0')    continue;
+            leadingZero=false;
+            res.append(digit);
+        }
+        if(res.length()==0) return "0";
+        return res.toString();
+       
+    }
+}
+
+不理解的点:
+1. for(int i=0; i<k; ++i) {
+            stack.removeLast();
+        }
+ 为什么要把栈中的元素弹出k个？
