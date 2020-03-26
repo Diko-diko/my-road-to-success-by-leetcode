@@ -71,3 +71,34 @@ class Solution {
     }
 }
 /*************************************3.25第一版，没通过**********************************/
+
+2020/3/26
+
+//从头到尾
+class Solution {
+public boolean canJump(int[] nums) {
+        int maxPods=0;
+        int len=nums.length;
+        for(int i=0;i<len-1;i++){
+			//注意下面两个if的顺序不能调换
+            if(i>maxPods) return false;
+            if(nums[i]+i>maxPods) maxPods=i+nums[i];
+        }
+        return maxPods>=len-1;
+    }
+}
+
+
+//从尾到头
+class Solution {
+public boolean canJump(int[] nums) {
+         int len=nums.length;
+        int maxPods=len-1;
+        for(int i=len-1;i>=0;i--){
+            if(nums[i]+i>=maxPods) //比较关系必须是>=而不是>
+                maxPods=i;
+        }
+        return maxPods==0;
+    }
+}
+总结:所以直接考虑maxPods的表示即可，若是从前往后，会有一个排除情况if，从后往前的话就只有一个if语句
