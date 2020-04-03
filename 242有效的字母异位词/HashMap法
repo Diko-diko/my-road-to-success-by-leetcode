@@ -1,0 +1,49 @@
+2020/4/3
+题目:
+242. 有效的字母异位词
+
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
+示例 1:
+
+输入: s = "anagram", t = "nagaram"
+输出: true
+
+示例 2:
+
+输入: s = "rat", t = "car"
+输出: false
+
+说明:
+你可以假设字符串只包含小写字母。
+
+思路:
+1.通过哈希表<Character,Integer>把第一个字符串转换为字符数组，再全部存入其中。若存在（containsKey()），则将个数+1即可
+2.第二个字符串转换为字符数组，全部检索，若出现相同的，则个数-1
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class HashMap法 {
+	public boolean isAnagram(String s, String t) {
+        if(s.length()!=t.length()) return false;
+        Map<Character,Integer> map=new HashMap<Character,Integer>();
+        char[]sm=s.toCharArray();
+        for(char m:sm){
+            if(map.containsKey(m)){
+                map.put(m,map.get(m)+1);//不能直接map.get(m)+1
+            }
+            else{
+                map.put(m,1);
+            }
+        }
+        char[]tm=t.toCharArray();
+        for(char n:tm){
+            if(map.containsKey(n)&&map.get(n)>=1){
+                map.put(n,map.get(n)-1);//注意这里不能直接使用map.get(n)-1,而是map.put()
+            }
+            else return false;
+        }
+        return true;
+    }
+}
