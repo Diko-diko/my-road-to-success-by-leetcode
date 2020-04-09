@@ -1,0 +1,62 @@
+2020/4/19
+题目:
+给定一种规律 pattern 和一个字符串 str ，判断 str 是否遵循相同的规律。
+
+这里的 遵循 指完全匹配，例如， pattern 里的每个字母和字符串 str 中的每个非空单词之间存在着双向连接的对应规律。
+
+示例1:
+
+输入: pattern = "abba", str = "dog cat cat dog"
+输出: true
+
+示例 2:
+
+输入:pattern = "abba", str = "dog cat cat fish"
+输出: false
+
+示例 3:
+
+输入: pattern = "aaaa", str = "dog cat cat dog"
+输出: false
+
+示例 4:
+
+输入: pattern = "abba", str = "dog dog dog dog"
+输出: false
+
+思路:
+1.使用HashMap和HashSet
+2.当map里不包含key时，再检查set里是否包含该str，防止出现dog dog dog dog的情况
+3.当map包含key时，只需要检查get的字符串是不是与传入的字符串相同即可，不需要在改if下add或put
+
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        boolean wordPattern=false;
+        String[] str1=str.split(" ");
+        if(pattern.length()!=str1.length){
+            return wordPattern;
+        }
+        char[] pat=pattern.toCharArray();
+         Map<Character,String> map=new HashMap<>();
+         HashSet<String> set=new HashSet<>();
+        for(int i=0;i<pat.length;i++){
+           
+            if(map.containsKey(pat[i])){
+                if(!map.get(pat[i]).equals(str1[i])){
+                    return wordPattern;
+                }
+            }
+            else{
+                if(set.contains(str1[i])){
+                    return wordPattern;
+                }
+                else{
+                    map.put(pat[i],str1[i]);
+                    set.add(str1[i]);
+                }
+            }
+        }
+        wordPattern=true;
+        return wordPattern;
+    }
+}
