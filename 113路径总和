@@ -1,0 +1,59 @@
+题目：
+给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。
+
+说明: 叶子节点是指没有子节点的节点。
+
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+
+
+思路:
+使用深度优先遍历算法，递归，以及回溯算法。给定一个sum总和，从上到下逐个减结点上的值。
+收集到叶子结点时满足条件的序列
+
+注意:
+1.path.offerLast(root.val)在path的最后加上一个root.val
+2.path.pollLast()将path最后一个值删除
+
+题解:
+class Solution{
+	//每个路径的集合
+	List<List<Integer>> ret=new LinkedList<List<Integer>>();
+	//一条路径
+	Deque<Integer> path=new LinkedList<Integer>();
+	
+	//调用dfs函数
+	public List<List<Integer>> pathSum(TreeNode root,int sum){
+		dfs(root,sum);
+		return ret;
+	}
+	
+	public void dfs(TreeNode root,int sum){
+		//结束条件
+		if(root==null){
+			return;
+		}
+		
+		//给path加上路径，若最后不满足则这组就不要了
+		path.offerLast(root.val);
+		//sum减去结点的值
+		sum-=root.val;
+		//若找到一组，将其path的list加入到ret中
+		if(root.left==null&&root.right==null&&sum==0){
+			ret.add(new LinkedList<Integer>(path));
+		}
+		dfs(root.left,sum);
+		dfs(root.right,sum);
+		//每次释放掉一个结点，因为无用了，这就是回溯
+		path.pollLast();
+		
+	}
+}
